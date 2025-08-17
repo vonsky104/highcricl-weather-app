@@ -1,35 +1,66 @@
-import { StrictMode } from "react";
-import ReactDOM from "react-dom/client";
 import {
 	Outlet,
 	RouterProvider,
 	createRootRoute,
 	createRoute,
 	createRouter,
+	useNavigate,
 } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
-
+import { StrictMode, useEffect } from "react";
+import ReactDOM from "react-dom/client";
 import "./styles.css";
+import { ROUTES } from "@/config/routes.ts";
+import HomePage from "@/features/HomePage";
+import Layout from "@/features/Layout";
+import WeatherDetails from "@/features/WeatherDetails";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster, toast } from "sonner";
 import reportWebVitals from "./reportWebVitals.ts";
 
-import App from "./App.tsx";
+// TODO: Add docker
+const queryClient = new QueryClient();
 
 const rootRoute = createRootRoute({
 	component: () => (
-		<>
+		<Layout>
 			<Outlet />
 			<TanStackRouterDevtools />
-		</>
+		</Layout>
 	),
 });
 
-const indexRoute = createRoute({
+const homePageRoute = createRoute({
 	getParentRoute: () => rootRoute,
 	path: "/",
-	component: App,
+	component: HomePage,
 });
 
-const routeTree = rootRoute.addChildren([indexRoute]);
+const weatherDetailsRoute = createRoute({
+	getParentRoute: () => rootRoute,
+	path: "/weather-details",
+	component: function WeatherDetailsPageWrapper() {
+		const { latitude, longitude } = weatherDetailsRoute.useSearch();
+		const navigate = useNavigate();
+		const isMissing = latitude === undefined || longitude === undefined;
+		useEffect(() => {
+			if (isMissing) {
+				toast.error("Missing latitude or longitude");
+				navigate({ to: ROUTES.HOME_PAGE });
+			}
+		}, [isMissing, navigate]);
+
+		return isMissing ? null : (
+			<WeatherDetails longitude={longitude} latitude={latitude} />
+		);
+	},
+	validateSearch: (search: Record<string, string>) => ({
+		latitude: search?.latitude ? Number(search?.latitude) : undefined,
+		longitude: search?.longitude ? Number(search?.longitude) : undefined,
+	}),
+});
+
+const routeTree = rootRoute.addChildren([homePageRoute, weatherDetailsRoute]);
 
 const router = createRouter({
 	routeTree,
@@ -51,7 +82,11 @@ if (rootElement && !rootElement.innerHTML) {
 	const root = ReactDOM.createRoot(rootElement);
 	root.render(
 		<StrictMode>
-			<RouterProvider router={router} />
+			<QueryClientProvider client={queryClient}>
+				<RouterProvider router={router} />
+				{/* TODO: Change styling of Toaster for notifications */}
+				<Toaster position="bottom-center" />
+			</QueryClientProvider>
 		</StrictMode>,
 	);
 }
