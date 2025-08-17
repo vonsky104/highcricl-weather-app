@@ -18,7 +18,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster, toast } from "sonner";
 import reportWebVitals from "./reportWebVitals.ts";
 
-// TODO: Add docker
 const queryClient = new QueryClient();
 
 const rootRoute = createRootRoute({
@@ -84,7 +83,6 @@ if (rootElement && !rootElement.innerHTML) {
 		<StrictMode>
 			<QueryClientProvider client={queryClient}>
 				<RouterProvider router={router} />
-				{/* TODO: Change styling of Toaster for notifications */}
 				<Toaster position="bottom-center" />
 			</QueryClientProvider>
 		</StrictMode>,

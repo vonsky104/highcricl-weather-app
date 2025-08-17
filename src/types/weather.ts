@@ -13,3 +13,17 @@ export interface ICurrentWeather {
 	windSpeed: number;
 	humidity: number;
 }
+
+export interface ICurrentWeatherFetched {
+	weatherCode: number;
+	temperature: number;
+	isFetched: true;
+}
+
+export interface ICurrentWeatherNotFetched {
+	isFetched: false;
+}
+
+export type ICurrentWeatherForCity =
+	| ICurrentWeatherFetched
+	| ICurrentWeatherNotFetched;

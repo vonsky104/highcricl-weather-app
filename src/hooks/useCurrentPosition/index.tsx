@@ -2,6 +2,8 @@ import type { ICurrentPosition } from "@/types/position.ts";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
+const UNSUPPORTED_ERROR = "Geolocation is not supported in your browser.";
+
 const useCurrentPosition = (): {
 	currentPosition: ICurrentPosition | null;
 	geolocationError: string | null;
@@ -12,7 +14,8 @@ const useCurrentPosition = (): {
 
 	useEffect(() => {
 		if (!navigator.geolocation) {
-			toast.error("Geolocation is not supported in your browser.");
+			toast.error(UNSUPPORTED_ERROR);
+			setGeolocationError(UNSUPPORTED_ERROR);
 			return;
 		}
 

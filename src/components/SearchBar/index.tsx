@@ -1,4 +1,5 @@
 import type { ICity } from "@/api/getCities.ts";
+import CityResults from "@/components/SearchBar/CityResults.tsx";
 import Input from "@/components/ui/Input";
 import { ROUTES } from "@/config/routes.ts";
 import useSearchCitiesQuery from "@/hooks/useSearchCitiesQuery";
@@ -8,7 +9,7 @@ import { useState } from "react";
 
 const SearchBar = () => {
 	const [searchTerm, setSearchTerm] = useState("");
-	const [isOpen, setIsOpen] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
 	const { data } = useSearchCitiesQuery(searchTerm);
 	const navigate = useNavigate();
 
@@ -40,24 +41,7 @@ const SearchBar = () => {
 			</div>
 
 			{isOpen && data && data.results.length > 0 && (
-				<div className="absolute top-10 left-0 right-0 bg-blue-200 border rounded-lg overflow-hidden z-50">
-					{data.results.map((city) => (
-						<button
-							type="button"
-							key={city.id}
-							onClick={() => handleCityClick(city)}
-							className="w-full px-4 py-3 text-left bg-blue-200 hover:bg-blue-300 cursor-pointer flex items-center gap-3 group"
-						>
-							<div>
-								<div className="font-medium text-foreground">{city.name}</div>
-								<div className="text-sm text-muted-foreground">
-									{city.country} - {city.latitude.toFixed(2)},{" "}
-									{city.longitude.toFixed(2)}
-								</div>
-							</div>
-						</button>
-					))}
-				</div>
+				<CityResults cities={data.results} handleCityClick={handleCityClick} />
 			)}
 		</div>
 	);

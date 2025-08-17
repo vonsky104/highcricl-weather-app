@@ -2,35 +2,10 @@ import { fetchWeatherApi } from "openmeteo";
 
 const url = "https://api.open-meteo.com/v1/forecast";
 
-// TODO: Remove after not useful for reference anymore
-// const defaultParams = {
-// 	daily: [
-// 		"weather_code",
-// 		"temperature_2m_max",
-// 		"temperature_2m_min",
-// 		"wind_speed_10m_max",
-// 	],
-// 	hourly: [
-// 		"temperature_2m",
-// 		"relative_humidity_2m",
-// 		"precipitation",
-// 		"weather_code",
-// 		"temperature_80m",
-// 		"wind_direction_80m",
-// 		"wind_speed_80m",
-// 		"apparent_temperature",
-// 	],
-// 	current: [
-// 		"weather_code",
-// 		"temperature_2m",
-// 		"wind_speed_10m",
-// 		"wind_direction_10m",
-// 	],
-// 	timezone: "auto",
-// 	forecast_days: 1,
-// };
-
-const getCurrentParams = (latitude: number, longitude: number) => ({
+const getCurrentParams = (
+	latitude: number | number[],
+	longitude: number | number[],
+) => ({
 	latitude,
 	longitude,
 	current: [
@@ -71,4 +46,11 @@ export const getForecastWeather = async (
 		url,
 		getForecastParams(latitude, longitude, forecastDays),
 	);
+};
+
+export const getCurrentWeatherForMultipleLocations = async (
+	latitudes: number[],
+	longitudes: number[],
+) => {
+	return await fetchWeatherApi(url, getCurrentParams(latitudes, longitudes));
 };

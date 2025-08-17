@@ -52,11 +52,13 @@ describe("useCurrentPosition", () => {
 
 	it("shows a toast error when geolocation is not supported and returns null", () => {
 		const { result } = renderHook(() => useCurrentPosition());
+		const error = "Geolocation is not supported in your browser.";
 
-		expect(toast.error).toHaveBeenCalledWith(
-			"Geolocation is not supported in your browser.",
-		);
-		expect(result.current).toBeNull();
+		expect(toast.error).toHaveBeenCalledWith(error);
+		expect(result.current).toStrictEqual({
+			currentPosition: null,
+			geolocationError: error,
+		});
 	});
 
 	it("sets current position on success", async () => {
@@ -82,18 +84,22 @@ describe("useCurrentPosition", () => {
 		expect(getCurrentPosition).toHaveBeenCalledTimes(1);
 
 		await waitFor(() => {
-			expect(result.current).toEqual(fakePosition);
+			expect(result.current).toEqual({
+				currentPosition: fakePosition,
+				geolocationError: null,
+			});
 		});
 
 		expect(toast.error).not.toHaveBeenCalled();
 	});
 
 	it("shows a toast error when geolocation fails and returns null", async () => {
+		const error = "User denied Geolocation";
 		mockGeolocation({
 			error: (cb) =>
 				cb?.({
 					code: 1,
-					message: "User denied Geolocation",
+					message: error,
 					PERMISSION_DENIED: 1,
 					POSITION_UNAVAILABLE: 2,
 					TIMEOUT: 3,
@@ -103,9 +109,12 @@ describe("useCurrentPosition", () => {
 		const { result } = renderHook(() => useCurrentPosition());
 
 		await waitFor(() => {
-			expect(toast.error).toHaveBeenCalledWith("User denied Geolocation");
+			expect(toast.error).toHaveBeenCalledWith(error);
 		});
 
-		expect(result.current).toBeNull();
+		expect(result.current).toStrictEqual({
+			currentPosition: null,
+			geolocationError: error,
+		});
 	});
 });
