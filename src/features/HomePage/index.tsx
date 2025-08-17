@@ -4,7 +4,7 @@ import SearchBar from "@/components/SearchBar";
 import ErrorInfo from "@/components/ui/ErrorInfo";
 import useCurrentPosition from "@/hooks/useCurrentPosition";
 
-const Index = () => {
+const HomePage = () => {
 	const { currentPosition, geolocationError } = useCurrentPosition();
 
 	return (
@@ -27,4 +27,4 @@ const Index = () => {
 	);
 };
 
-export default Index;
+export default HomePage;

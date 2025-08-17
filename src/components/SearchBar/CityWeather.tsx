@@ -17,7 +17,7 @@ const CityWeather = ({ data }: ICityWeatherProps) => {
 	}
 
 	return (
-		<div className="flex gap-2">
+		<div className="flex gap-2 min-w-[70px]">
 			<WeatherIcon conditionCode={data.weatherCode} />
 			<Temperature value={data.temperature} />
 		</div>
