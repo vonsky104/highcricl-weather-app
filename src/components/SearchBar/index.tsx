@@ -40,7 +40,7 @@ const SearchBar = () => {
 				/>
 			</div>
 
-			{isOpen && data && data.results.length > 0 && (
+			{isOpen && data && data.results?.length > 0 && (
 				<CityResults cities={data.results} handleCityClick={handleCityClick} />
 			)}
 		</div>

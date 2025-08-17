@@ -13,7 +13,6 @@ const LocationName = ({ longitude, latitude }: ILocationNameProps) => {
 		isError: isCurrentLocationError,
 		isPending,
 	} = useCurrentLocationQuery({ coords: { latitude, longitude } });
-	console.log(currentLocation);
 
 	if (isFetchingCurrentLocation || !currentLocation || isPending) {
 		return <LoadingSpinner />;
