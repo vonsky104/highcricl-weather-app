@@ -1,3 +1,5 @@
+import { ROUTES } from "@/config/routes.ts";
+import { Link } from "@tanstack/react-router";
 import logo from "./logo.svg";
 
 function App() {
@@ -12,6 +14,7 @@ function App() {
 				<p>
 					Edit <code>src/App.tsx</code> and save to reload.
 				</p>
+				<Link to={ROUTES.WEATHER_DETAILS_PAGE}>Weather Details</Link>
 				<a
 					className="text-[#61dafb] hover:underline"
 					href="https://reactjs.org"
@@ -19,14 +22,6 @@ function App() {
 					rel="noopener noreferrer"
 				>
 					Learn React
-				</a>
-				<a
-					className="text-[#61dafb] hover:underline"
-					href="https://tanstack.com"
-					target="_blank"
-					rel="noopener noreferrer"
-				>
-					Learn TanStack
 				</a>
 			</header>
 		</div>
