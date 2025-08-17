@@ -11,6 +11,16 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
   },
+  preview: {
+    port: 3000,
+    strictPort: true,
+  },
+  server: {
+    port: 3001,
+    strictPort: true,
+    host: true,
+    origin: "http://0.0.0.0:3001",
+  },
   resolve: {
     alias: {
       '@': resolve(__dirname, './src'),

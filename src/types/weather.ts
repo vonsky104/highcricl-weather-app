@@ -5,3 +5,11 @@ export interface IForecastDay {
 	low: number;
 	conditionCode: number;
 }
+
+export interface ICurrentWeather {
+	time: Date;
+	weatherCode: number;
+	temperature: number;
+	windSpeed: number;
+	humidity: number;
+}

@@ -1,18 +1,18 @@
 import { getCurrentWeather } from "@/api/weather.ts";
 import type { ICurrentPosition } from "@/types/position.ts";
+import type { ICurrentWeather } from "@/types/weather.ts";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const useCurrentWeatherQuery = (currentPosition: ICurrentPosition | null) => {
-	return useQuery({
+	return useQuery<ICurrentWeather | null>({
 		queryKey: [
 			"current-weather",
 			`${currentPosition?.coords.latitude}:${currentPosition?.coords.longitude}`,
 		],
 		queryFn: async () => {
-			// TODO: Add type for return values
 			if (!currentPosition) {
-				return;
+				return null;
 			}
 
 			const responses = await getCurrentWeather(
@@ -29,17 +29,13 @@ const useCurrentWeatherQuery = (currentPosition: ICurrentPosition | null) => {
 				return null;
 			}
 
-			const weatherData = {
-				current: {
-					time: new Date((Number(current.time()) + utcOffsetSeconds) * 1000),
-					weather_code: current.variables(0)!.value(),
-					temperature_2m: current.variables(1)!.value(),
-					wind_speed_10m: current.variables(2)!.value(),
-					relative_humidity_2m: current.variables(3)!.value(),
-				},
+			return {
+				time: new Date((Number(current.time()) + utcOffsetSeconds) * 1000),
+				weatherCode: current.variables(0)!.value(),
+				temperature: current.variables(1)!.value(),
+				windSpeed: current.variables(2)!.value(),
+				humidity: current.variables(3)!.value(),
 			};
-
-			return weatherData;
 		},
 		enabled: currentPosition !== null,
 	});

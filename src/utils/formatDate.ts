@@ -18,7 +18,6 @@ export function formatDate(date: Date): { dayName: string; date: string } {
 		dayName = target.toLocaleDateString("en-US", { weekday: "long" });
 	}
 
-	// TODO: Include year?
 	const dateString = target.toLocaleDateString("en-US", {
 		month: "long",
 		day: "numeric",

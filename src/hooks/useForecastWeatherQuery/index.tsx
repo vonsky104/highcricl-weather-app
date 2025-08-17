@@ -78,7 +78,7 @@ const useForecastWeatherQuery = (
 
 			return result;
 		},
-		enabled: currentPosition !== null,
+		enabled: currentPosition !== null && forecastDays > 0,
 	});
 };
 

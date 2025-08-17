@@ -22,7 +22,11 @@ const WeatherConditions = ({
 	} = useCurrentWeatherQuery({ coords: { latitude, longitude } });
 
 	if (isCurrentWeatherError) {
-		return <h1 className="text-red-100">Error when fetching location name</h1>;
+		return (
+			<div className="flex flex-col gap-4 items-center mt-6">
+				<h1 className="text-4xl">Error when fetching Weather Conditions</h1>
+			</div>
+		);
 	}
 
 	if (isFetchingCurrentWeather || !currentWeather || isPending) {
@@ -32,23 +36,17 @@ const WeatherConditions = ({
 	return (
 		<div className="flex flex-col gap-4 items-center mt-6">
 			<p className="text-4xl">
-				<Temperature value={currentWeather.current.temperature_2m} />
+				<Temperature value={currentWeather.temperature} />
 			</p>
 			<p className="text-xl">
-				<WeatherDescription
-					conditionCode={currentWeather.current.weather_code}
-				/>
+				<WeatherDescription conditionCode={currentWeather.weatherCode} />
 			</p>
-			<WeatherIcon
-				conditionCode={currentWeather.current.weather_code}
-				size={300}
-			/>
+			<WeatherIcon conditionCode={currentWeather.weatherCode} size={300} />
 			<div className="flex gap-2 items-center">
-				<Wind size={32} /> {currentWeather.current.wind_speed_10m.toFixed(2)}{" "}
-				km/h
+				<Wind size={32} /> {currentWeather.windSpeed.toFixed(2)} km/h
 			</div>
 			<div className="flex gap-2 items-center">
-				<Droplet size={32} /> {currentWeather.current.relative_humidity_2m}%
+				<Droplet size={32} /> {currentWeather.humidity}%
 			</div>
 		</div>
 	);

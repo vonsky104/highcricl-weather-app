@@ -13,13 +13,24 @@ const LocationName = ({ longitude, latitude }: ILocationNameProps) => {
 		isError: isCurrentLocationError,
 		isPending,
 	} = useCurrentLocationQuery({ coords: { latitude, longitude } });
-
-	if (isCurrentLocationError) {
-		return <h1 className="text-red-100">Error when fetching location name</h1>;
-	}
+	console.log(currentLocation);
 
 	if (isFetchingCurrentLocation || !currentLocation || isPending) {
 		return <LoadingSpinner />;
+	}
+
+	if (isCurrentLocationError) {
+		return (
+			<h1 className="text-4xl font-semibold text-red-500">
+				Error when fetching location name
+			</h1>
+		);
+	}
+
+	if (!currentLocation.city) {
+		return (
+			<h1 className="text-4xl font-semibold text-red-500">No name found</h1>
+		);
 	}
 
 	return (

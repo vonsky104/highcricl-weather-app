@@ -68,18 +68,13 @@ const CurrentWeather = ({ currentPosition }: ICurrentWeatherProps) => {
 				</div>
 				<div className="flex flex-row items-center gap-4">
 					<div>
-						<WeatherIcon
-							conditionCode={currentWeather.current.weather_code}
-							size={64}
-						/>
+						<WeatherIcon conditionCode={currentWeather.weatherCode} size={64} />
 					</div>
 					<div>
 						<div className="text-4xl font-bold text-foreground">
-							<Temperature value={currentWeather.current.temperature_2m} />
+							<Temperature value={currentWeather.temperature} />
 						</div>
-						<WeatherDescription
-							conditionCode={currentWeather.current.weather_code}
-						/>
+						<WeatherDescription conditionCode={currentWeather.weatherCode} />
 					</div>
 				</div>
 			</div>
