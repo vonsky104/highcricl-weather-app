@@ -61,7 +61,7 @@ const CurrentWeather = ({ currentPosition }: ICurrentWeatherProps) => {
 						{currentLocation.city}
 					</h2>
 					<p className="text-sm text-muted-foreground">
-						{currentLocation.countryName} •{" "}
+						{currentLocation.countryName} -{" "}
 						{currentPosition.coords.latitude.toFixed(2)},{" "}
 						{currentPosition.coords.longitude.toFixed(2)}
 					</p>
