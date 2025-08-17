@@ -126,25 +126,25 @@ const WEATHER_CODE_MAP: Record<number, Omit<WeatherInfo, "code">> = {
 		label: "Light snow",
 		description: "Light snow fall",
 		icon: CloudSnow,
-		color: "text-blue-200",
+		color: "text-blue-100",
 	},
 	73: {
 		label: "Snow",
 		description: "Moderate snow fall",
 		icon: CloudSnow,
-		color: "text-blue-200",
+		color: "text-blue-100",
 	},
 	75: {
 		label: "Heavy snow",
 		description: "Heavy snow fall",
 		icon: CloudSnow,
-		color: "text-blue-200",
+		color: "text-blue-100",
 	},
 	77: {
 		label: "Snow grains",
 		description: "Snow grains",
 		icon: CloudSnow,
-		color: "text-blue-200",
+		color: "text-blue-100",
 	},
 
 	80: {
@@ -170,13 +170,13 @@ const WEATHER_CODE_MAP: Record<number, Omit<WeatherInfo, "code">> = {
 		label: "Snow showers",
 		description: "Light snow showers",
 		icon: CloudSnow,
-		color: "text-blue-200",
+		color: "text-blue-100",
 	},
 	86: {
 		label: "Heavy snow showers",
 		description: "Heavy snow showers",
 		icon: CloudSnow,
-		color: "text-blue-200",
+		color: "text-blue-100",
 	},
 
 	95: {

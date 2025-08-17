@@ -6,7 +6,7 @@ interface IWeatherDescriptionProps {
 
 const WeatherDescription = ({ conditionCode }: IWeatherDescriptionProps) => {
 	const { description } = getWeatherInfo(conditionCode);
-	return <p className="text-muted-foreground capitalize">{description}</p>;
+	return <>{description}</>;
 };
 
 export default WeatherDescription;

@@ -1,43 +1,63 @@
 import Temperature from "@/components/Temperature";
 import WeatherDescription from "@/components/WeatherDescription";
 import WeatherIcon from "@/components/WeatherIcon";
+import ErrorInfo from "@/components/ui/ErrorInfo";
 import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import useCurrentLocationQuery from "@/hooks/useCurrentLocationQuery";
 import useCurrentWeatherQuery from "@/hooks/useCurrentWeatherQuery";
 import type { ICurrentPosition } from "@/types/position.ts";
-import { MapPin } from "lucide-react";
 
 interface ICurrentWeatherProps {
 	currentPosition: ICurrentPosition | null;
 }
 
 const CurrentWeather = ({ currentPosition }: ICurrentWeatherProps) => {
-	const { data: currentLocation, isFetching: isFetchingCurrentLocation } =
-		useCurrentLocationQuery(currentPosition);
-	const { data: currentWeather, isFetching: isFetchingCurrentWeather } =
-		useCurrentWeatherQuery(currentPosition);
+	const {
+		data: currentLocation,
+		isFetching: isFetchingCurrentLocation,
+		isError: isFetchingCurrentLocationError,
+		isPending: isPendingCurrentLocation,
+	} = useCurrentLocationQuery(currentPosition);
+	const {
+		data: currentWeather,
+		isFetching: isFetchingCurrentWeather,
+		isError: isFetchingCurrentWeatherError,
+		isPending: isPendingCurrentWeather,
+	} = useCurrentWeatherQuery(currentPosition);
 
-	// TODO: Move currentLocation and currentWeather condition to error state
+	// TODO: Potential improvement - introduce skeleton loader
 	if (
 		isFetchingCurrentLocation ||
 		isFetchingCurrentWeather ||
-		!currentPosition ||
-		!currentLocation ||
-		!currentWeather
+		isPendingCurrentLocation ||
+		isPendingCurrentWeather
 	) {
 		return (
-			<div className="bg-glass border border-glass-border backdrop-blur-glass rounded-2xl p-6 shadow-glass animate-pulse">
+			<div className="ml-auto mr-auto w-full md:w-1/2 min-h-[120px] flex items-center justify-center bg-blue-300 p-6 rounded-xl border border-white">
 				<LoadingSpinner />
 			</div>
 		);
 	}
 
+	if (
+		isFetchingCurrentWeatherError ||
+		isFetchingCurrentLocationError ||
+		!currentPosition ||
+		!currentLocation ||
+		!currentWeather
+	) {
+		return (
+			<div className="ml-auto mr-auto w-full md:w-1/2 min-h-[120px] flex items-center justify-center bg-blue-300 p-6 rounded-xl border border-white">
+				<ErrorInfo />
+			</div>
+		);
+	}
+
 	return (
-		<div className="bg-glass border border-glass-border backdrop-blur-glass rounded-2xl p-6 shadow-glass animate-fade-in">
-			<div className="flex items-center gap-2 mb-4">
-				<MapPin className="w-5 h-5 text-primary" />
-				<div>
-					<h2 className="text-lg font-semibold text-foreground">
+		<div className="ml-auto mr-auto w-full md:w-1/2 bg-blue-300 p-6 rounded-xl border border-white">
+			<div className="flex flex-col xs:flex-row justify-between items-center gap-2">
+				<div className="flex flex-col gap-1">
+					<h2 className="text-4xl font-semibold text-foreground">
 						{currentLocation.city}
 					</h2>
 					<p className="text-sm text-muted-foreground">
@@ -47,7 +67,7 @@ const CurrentWeather = ({ currentPosition }: ICurrentWeatherProps) => {
 					</p>
 				</div>
 				<div className="flex flex-row items-center gap-4">
-					<div className="animate-float">
+					<div>
 						<WeatherIcon
 							conditionCode={currentWeather.current.weather_code}
 							size={64}
@@ -57,10 +77,10 @@ const CurrentWeather = ({ currentPosition }: ICurrentWeatherProps) => {
 						<div className="text-4xl font-bold text-foreground">
 							<Temperature value={currentWeather.current.temperature_2m} />
 						</div>
+						<WeatherDescription
+							conditionCode={currentWeather.current.weather_code}
+						/>
 					</div>
-					<WeatherDescription
-						conditionCode={currentWeather.current.weather_code}
-					/>
 				</div>
 			</div>
 		</div>
